@@ -12,7 +12,6 @@ import {
   Trophy,
   Briefcase,
   LogOut,
-  GraduationCap,
   Menu,
   X,
 } from "lucide-react";
@@ -48,8 +47,8 @@ function SidebarContent({ userName }: { userName: string }) {
       {/* Brand */}
       <div className="p-6 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-sidebar-primary flex items-center justify-center shadow">
-            <GraduationCap className="w-5 h-5 text-sidebar-primary-foreground" />
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center">
+            <Image src="/logo.png" alt="Logo" width={32} height={32} className="object-contain" />
           </div>
           <div>
             <p className="text-sm font-bold text-sidebar-foreground leading-none">
@@ -145,7 +144,9 @@ export function AdminSidebar({ userName }: { userName: string }) {
           </SheetContent>
         </Sheet>
         <div className="flex items-center gap-2">
-          <GraduationCap className="w-5 h-5 text-sidebar-primary" />
+          <div className="w-6 h-6 flex items-center justify-center">
+            <Image src="/logo.png" alt="Logo" width={24} height={24} className="object-contain" />
+          </div>
           <span className="text-sm font-bold text-sidebar-foreground">Talent Hub Admin</span>
         </div>
       </div>

@@ -5,12 +5,12 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // ─── Admin ───────────────────────────────────────────────
-  const adminPassword = await bcrypt.hash("admin123", 10);
+  const adminPassword = await bcrypt.hash("amikom", 10);
   const admin = await prisma.user.upsert({
     where: { email: "admin@campus.ac.id" },
     update: {},
     create: {
-      email: "admin@campus.ac.id",
+      email: "admin@amikom.ac.id",
       name: "Admin Kampus",
       password: adminPassword,
       role: "ADMIN",
@@ -122,6 +122,19 @@ async function main() {
 
   // ─── Students ─────────────────────────────────────────────
   const studentsData = [
+    {
+      name: "Zaeni Ahmad",
+      email: "zaeni@gmail.com",
+      major: "Sistem Informasi",
+      cohortYear: 2021,
+      bio: "Tech enthusiast dan future CTO yang lagi ikut hackathon!",
+      skills: ["Programmer", "Data Analyst"],
+      certLevel: "INTERNASIONAL" as const,
+      certTitle: "AWS Certified Developer - Associate",
+      portfolioType: "INDUSTRI" as const,
+      portfolioTitle: "Sistem Rekomendasi E-Commerce",
+      basePoints: 0,
+    },
     {
       name: "Andi Pratama",
       email: "andi@student.ac.id",

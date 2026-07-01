@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { GraduationCap, Award, Briefcase, Star, ArrowRight, ShieldCheck } from "lucide-react";
+import { Award, Briefcase, Star, ArrowRight, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -22,8 +23,8 @@ export default async function LandingPage() {
       <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="bg-primary p-2 rounded-lg">
-              <GraduationCap className="w-5 h-5 text-primary-foreground" />
+            <div className="bg-transparent p-0">
+              <Image src="/logo.png" alt="Talent Hub Logo" width={32} height={32} className="object-contain" />
             </div>
             <span className="font-bold text-xl tracking-tight">Talent Hub</span>
           </div>
@@ -48,7 +49,7 @@ export default async function LandingPage() {
             <span>Platform Gamifikasi Mahasiswa #1</span>
           </div>
           
-          <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-primary">
+          <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground via-primary to-blue-600">
             Bangun Portofolio.<br />Dapatkan Reward.
           </h1>
           
