@@ -59,10 +59,10 @@ export default async function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/register" className={buttonVariants({ size: "lg", className: "rounded-full h-14 px-8 text-base shadow-xl shadow-primary/25" })}>
+            <Link href="/register" className={buttonVariants({ size: "lg", className: "!rounded-full h-14 px-8 text-base shadow-xl shadow-primary/25 hover:scale-105 transition-transform" })}>
               Mulai Perjalananmu <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
-            <Link href="/login" className={buttonVariants({ variant: "outline", size: "lg", className: "rounded-full h-14 px-8 text-base bg-background/50 backdrop-blur-sm border-white/10 hover:bg-white/5" })}>
+            <Link href="/login" className={buttonVariants({ variant: "outline", size: "lg", className: "!rounded-full h-14 px-8 text-base bg-background/50 backdrop-blur-sm hover:bg-gray-100 hover:text-black dark:hover:bg-gray-800 transition-colors" })}>
               Lihat Leaderboard
             </Link>
           </div>
@@ -70,7 +70,7 @@ export default async function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-muted/30 border-y border-white/5">
+      <section className="py-24 bg-gradient-to-b from-background to-muted/50 border-t border-border">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Cara Kerja Talent Hub</h2>
@@ -107,10 +107,10 @@ export default async function LandingPage() {
 
 function FeatureCard({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
   return (
-    <div className="p-8 rounded-3xl bg-card border border-white/5 hover:border-primary/50 transition-colors group relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+    <div className="p-8 rounded-3xl bg-card border border-border/50 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 group relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="relative z-10">
-        <div className="w-14 h-14 rounded-2xl bg-background border border-white/10 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300">
+        <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
           {icon}
         </div>
         <h3 className="text-xl font-bold mb-3">{title}</h3>

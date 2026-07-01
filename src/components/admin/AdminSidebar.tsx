@@ -15,6 +15,8 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -39,7 +41,13 @@ const adminLinks = [
   { href: "/admin/opportunities", label: "Opportunity", icon: Briefcase },
 ];
 
-function SidebarContent({ userName }: { userName: string }) {
+function SidebarContent({
+  userName,
+  onLinkClick,
+}: {
+  userName: string;
+  onLinkClick?: () => void;
+}) {
   const pathname = usePathname();
 
   return (
@@ -69,6 +77,7 @@ function SidebarContent({ userName }: { userName: string }) {
             <Link
               key={link.href}
               href={link.href}
+              onClick={onLinkClick}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
                 isActive
@@ -85,39 +94,39 @@ function SidebarContent({ userName }: { userName: string }) {
 
       {/* Footer */}
       <div className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-3 px-3 py-2 rounded-xl mb-2">
-          <div className="w-8 h-8 rounded-full bg-sidebar-primary/20 flex items-center justify-center">
-            <span className="text-xs font-bold text-sidebar-primary-foreground">
+        <div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-sidebar-primary/5 hover:bg-sidebar-primary/10 transition-colors">
+          <div className="w-9 h-9 rounded-full bg-sidebar-primary/20 flex items-center justify-center">
+            <span className="text-sm font-bold text-sidebar-primary-foreground">
               {userName?.charAt(0)?.toUpperCase() ?? "A"}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-sidebar-foreground truncate">
+            <p className="text-sm font-semibold text-sidebar-foreground truncate">
               {userName}
             </p>
-            <p className="text-xs text-sidebar-foreground/50">Administrator</p>
+            <p className="text-xs text-sidebar-foreground/60">Administrator</p>
           </div>
+          
+          <AlertDialog>
+            <AlertDialogTrigger className="p-2 ml-auto text-sidebar-foreground/60 hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors" title="Logout">
+              <LogOut className="w-5 h-5" />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Konfirmasi Logout</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Apakah Anda yakin ingin keluar dari panel admin?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Batal</AlertDialogCancel>
+                <AlertDialogAction onClick={() => signOut({ callbackUrl: "/login" })}>
+                  Ya, Keluar
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
-        <AlertDialog>
-          <AlertDialogTrigger className="inline-flex w-full justify-start items-center gap-3 text-sidebar-foreground/60 hover:text-destructive hover:bg-destructive/10 text-sm h-10 px-4 py-2 rounded-md font-medium transition-colors">
-            <LogOut className="w-4 h-4" />
-            Logout
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Konfirmasi Logout</AlertDialogTitle>
-              <AlertDialogDescription>
-                Apakah Anda yakin ingin keluar dari akun ini?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Batal</AlertDialogCancel>
-              <AlertDialogAction onClick={() => signOut({ callbackUrl: "/login" })}>
-                Ya, Keluar
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
       </div>
     </div>
   );
@@ -140,7 +149,7 @@ export function AdminSidebar({ userName }: { userName: string }) {
             <Menu className="w-5 h-5" />
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-0 bg-sidebar border-sidebar-border">
-            <SidebarContent userName={userName} />
+            <SidebarContent userName={userName} onLinkClick={() => setOpen(false)} />
           </SheetContent>
         </Sheet>
         <div className="flex items-center gap-2">
