@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+}
+
+enum SubmissionType {
+  SKILL
+  CERTIFICATE
+  PORTFOLIO
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum CertificateLevel {
+  LOKAL
+  REGIONAL
+  NASIONAL
+  INTERNASIONAL
+}
+
+enum PortfolioType {
+  PERSONAL
+  FREELANCE
+  INDUSTRI
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  password    String
+  role        Role
+  avatarUrl   String?
+  totalPoints Int      @default(0)
+  major       String?
+  cohortYear  Int?
+  bio         String?
+  createdAt   DateTime @default(now())
+
+  skills       StudentSkill[]
+  certificates Certificate[]
+  portfolios   Portfolio[]
+  submissions  Submission[]
+  rewardClaims RewardClaim[]
+}
+
+model Skill {
+  id       String  @id @default(cuid())
+  name     String  @unique
+  category String?
+
+  studentSkills StudentSkill[]
+}
+
+model StudentSkill {
+  id        String           @id @default(cuid())
+  userId    String
+  skillId   String
+  proofUrl  String?
+  status    SubmissionStatus @default(PENDING)
+  points    Int              @default(0)
+  createdAt DateTime         @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  skill Skill @relation(fields: [skillId], references: [id])
+
+  @@unique([userId, skillId])
+}
+
+model Certificate {
+  id            String           @id @default(cuid())
+  userId        String
+  title         String
+  issuer        String?
+  level         CertificateLevel
+  fileUrl       String
+  status        SubmissionStatus @default(PENDING)
+  points        Int              @default(0)
+  rejectionNote String?
+  createdAt     DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Portfolio {
+  id            String           @id @default(cuid())
+  userId        String
+  title         String
+  type          PortfolioType
+  description   String?
+  linkUrl       String?
+  fileUrl       String?
+  status        SubmissionStatus @default(PENDING)
+  points        Int              @default(0)
+  rejectionNote String?
+  createdAt     DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Submission {
+  id            String           @id @default(cuid())
+  userId        String
+  type          SubmissionType
+  refId         String
+  title         String
+  status        SubmissionStatus @default(PENDING)
+  pointsAwarded Int              @default(0)
+  reviewedBy    String?
+  reviewedAt    DateTime?
+  rejectionNote String?
+  createdAt     DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Reward {
+  id             String   @id @default(cuid())
+  title          String
+  description    String?
+  pointsRequired Int
+  stock          Int      @default(0)
+  imageUrl       String?
+  createdAt      DateTime @default(now())
+
+  claims RewardClaim[]
+}
+
+model RewardClaim {
+  id        String   @id @default(cuid())
+  userId    String
+  rewardId  String
+  claimedAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  reward Reward @relation(fields: [rewardId], references: [id])
+}
+
+model Opportunity {
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  requiredSkills Json
+  postedBy       String
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+}
+
