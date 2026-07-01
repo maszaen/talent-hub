@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, CheckSquare, Award, Star } from "lucide-react";
+import { DashboardChart } from "@/components/admin/DashboardChart";
 
 export default async function AdminDashboard() {
   const session = await auth();
@@ -12,13 +13,30 @@ export default async function AdminDashboard() {
     approvedCertificates,
     approvedPortfolios,
     pendingSubmissions,
+    submissions,
   ] = await Promise.all([
     prisma.user.count({ where: { role: "STUDENT" } }),
     prisma.studentSkill.count({ where: { status: "APPROVED" } }),
     prisma.certificate.count({ where: { status: "APPROVED" } }),
     prisma.portfolio.count({ where: { status: "APPROVED" } }),
     prisma.submission.count({ where: { status: "PENDING" } }),
+    prisma.submission.findMany({
+      select: { createdAt: true },
+      where: {
+        createdAt: {
+          gte: new Date(new Date().getFullYear(), 0, 1),
+        },
+      },
+    }),
   ]);
+
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthlyData = monthNames.map(name => ({ name, total: 0 }));
+
+  submissions.forEach(sub => {
+    const month = sub.createdAt.getMonth();
+    monthlyData[month].total += 1;
+  });
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -71,15 +89,8 @@ export default async function AdminDashboard() {
         </Card>
       </div>
 
-      {/* Placeholder for more complex analytics */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Overview</CardTitle>
-        </CardHeader>
-        <CardContent className="h-64 flex items-center justify-center text-muted-foreground border-2 border-dashed rounded-lg">
-          Grafik analitik akan ditampilkan di sini.
-        </CardContent>
-      </Card>
+      {/* Analytics Chart */}
+      <DashboardChart data={monthlyData} />
     </div>
   );
 }
