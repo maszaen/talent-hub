@@ -59,7 +59,7 @@ export default async function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/register" className={buttonVariants({ size: "lg", className: "!rounded-full h-14 px-8 text-base shadow-xl shadow-primary/25 hover:scale-105 transition-transform" })}>
+            <Link href="/register" className={buttonVariants({ size: "lg", className: "!rounded-full h-14 px-8 text-base shadow-xl shadow-primary/25 hover:scale-[1.04] hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]" })}>
               Mulai Perjalananmu <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
             <Link href="/login" className={buttonVariants({ variant: "outline", size: "lg", className: "!rounded-full h-14 px-8 text-base bg-background/50 backdrop-blur-sm hover:bg-gray-100 hover:text-black dark:hover:bg-gray-800 transition-colors" })}>
