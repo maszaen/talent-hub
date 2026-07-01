@@ -66,7 +66,7 @@ export function StudentSkillsClient({ skills, availableSkills }: { skills: Stude
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label>Pilih Keahlian</Label>
-                <Select name="skillId" required value={selectedSkillId} onValueChange={setSelectedSkillId}>
+                <Select name="skillId" required value={selectedSkillId} onValueChange={(val) => setSelectedSkillId(val ?? "")}>
                   <SelectTrigger>
                     <SelectValue placeholder="Pilih skill yang kamu miliki" />
                   </SelectTrigger>
