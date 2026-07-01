@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  web:
+    build: .
+    container_name: university-talent-hub-web
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=mysql://root:root@mysql:3306/talent_hub
+      - NEXTAUTH_URL=http://localhost:3001
+      - NEXTAUTH_SECRET=super-secret-key-change-in-production-min-32-chars
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
   mysql:
     image: mysql:8.0
     container_name: university-talent-hub-db
