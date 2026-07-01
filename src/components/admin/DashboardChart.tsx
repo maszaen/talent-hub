@@ -1,6 +1,6 @@
 "use client";
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Cell } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 type ChartData = {
@@ -21,36 +21,52 @@ export function DashboardChart({ data }: { data: ChartData[] }) {
         <div className="h-[350px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted-foreground)/0.2)" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(156, 163, 175, 0.2)" />
               <XAxis
                 dataKey="name"
-                stroke="hsl(var(--muted-foreground))"
+                stroke="#9ca3af"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 padding={{ left: 10, right: 10 }}
               />
               <YAxis
-                stroke="hsl(var(--muted-foreground))"
+                stroke="#9ca3af"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) => `${value}`}
               />
               <Tooltip 
-                cursor={{ fill: 'hsl(var(--muted)/0.5)' }}
+                cursor={{ fill: 'rgba(156, 163, 175, 0.2)' }}
                 contentStyle={{ 
-                  backgroundColor: 'hsl(var(--background))', 
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                  border: '1px solid rgba(156, 163, 175, 0.2)',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  color: '#000'
                 }}
               />
               <Bar 
                 dataKey="total" 
-                fill="hsl(var(--primary))" 
                 radius={[4, 4, 0, 0]} 
                 maxBarSize={50}
-              />
+              >
+                {data.map((entry, index) => {
+                  const maxVal = Math.max(...data.map(d => d.total));
+                  let color = "#3b82f6"; // Blue (medium)
+                  
+                  if (entry.total === 0) {
+                    color = "rgba(156, 163, 175, 0.1)"; // Almost invisible
+                  } else if (maxVal > 0 && entry.total >= maxVal * 0.75) {
+                    color = "#10b981"; // Emerald green (high)
+                  } else if (maxVal > 0 && entry.total <= maxVal * 0.25) {
+                    color = "#f43f5e"; // Rose red (low)
+                  }
+
+                  return <Cell key={`cell-${index}`} fill={color} />;
+                })}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
