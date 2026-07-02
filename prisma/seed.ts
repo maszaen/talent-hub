@@ -10,7 +10,7 @@ async function main() {
     where: { email: "admin@campus.ac.id" },
     update: {},
     create: {
-      email: "admin@amikom.ac.id",
+      email: "admin@campus.ac.id",
       name: "Admin Kampus",
       password: adminPassword,
       role: "ADMIN",
