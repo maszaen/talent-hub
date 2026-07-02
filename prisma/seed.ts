@@ -398,6 +398,48 @@ async function main() {
     }).catch(() => {});
   }
 
+  // ─── Time-Series Mock Data ──────────────────────────────
+  console.log("Generating time-series mock data for chart...");
+  const thisYear = new Date().getFullYear();
+  const allUsers = await prisma.user.findMany({ where: { role: "STUDENT" } });
+  if (allUsers.length > 0) {
+    const currentMonth = new Date().getMonth();
+    
+    // Generate data from January up to Current Month
+    for (let month = 0; month <= currentMonth; month++) {
+      // Random number of submissions between 10 and 45 per month
+      const count = Math.floor(Math.random() * 36) + 10;
+      
+      const ops = [];
+      for (let i = 0; i < count; i++) {
+        const day = Math.floor(Math.random() * 28) + 1;
+        const randomDate = new Date(thisYear, month, day);
+        
+        const randomUser = allUsers[Math.floor(Math.random() * allUsers.length)];
+        const types = ["SKILL", "CERTIFICATE", "PORTFOLIO"];
+        const randomType = types[Math.floor(Math.random() * types.length)] as any;
+        
+        ops.push(
+          prisma.submission.create({
+            data: {
+              userId: randomUser.id,
+              type: randomType,
+              refId: `mock-${month}-${i}-${Date.now()}`,
+              title: `Mock Data ${month}-${i}`,
+              status: "APPROVED",
+              pointsAwarded: Math.floor(Math.random() * 10) + 1,
+              reviewedBy: "Admin Kampus",
+              reviewedAt: randomDate,
+              createdAt: randomDate, 
+            },
+          }).catch(() => {})
+        );
+      }
+      await Promise.all(ops);
+    }
+    console.log("✅ Time-series mock data generated");
+  }
+
   console.log("✅ Students + data seeded");
   console.log("\n🎉 Seed completed!");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
