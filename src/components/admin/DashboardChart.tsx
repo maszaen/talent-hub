@@ -21,6 +21,24 @@ export function DashboardChart({ data }: { data: ChartData[] }) {
         <div className="h-[350px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
+              <defs>
+                <linearGradient id="colorHigh" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0.2}/>
+                </linearGradient>
+                <linearGradient id="colorLow" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#f43f5e" stopOpacity={0.2}/>
+                </linearGradient>
+                <linearGradient id="colorMid" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.2}/>
+                </linearGradient>
+                <linearGradient id="colorZero" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#9ca3af" stopOpacity={0.2}/>
+                  <stop offset="95%" stopColor="#9ca3af" stopOpacity={0.05}/>
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(156, 163, 175, 0.2)" />
               <XAxis
                 dataKey="name"
@@ -54,14 +72,14 @@ export function DashboardChart({ data }: { data: ChartData[] }) {
               >
                 {data.map((entry, index) => {
                   const maxVal = Math.max(...data.map(d => d.total));
-                  let color = "#3b82f6"; // Blue (medium)
+                  let color = "url(#colorMid)";
                   
                   if (entry.total === 0) {
-                    color = "rgba(156, 163, 175, 0.1)"; // Almost invisible
+                    color = "url(#colorZero)";
                   } else if (maxVal > 0 && entry.total >= maxVal * 0.75) {
-                    color = "#10b981"; // Emerald green (high)
+                    color = "url(#colorHigh)";
                   } else if (maxVal > 0 && entry.total <= maxVal * 0.25) {
-                    color = "#f43f5e"; // Rose red (low)
+                    color = "url(#colorLow)";
                   }
 
                   return <Cell key={`cell-${index}`} fill={color} />;
